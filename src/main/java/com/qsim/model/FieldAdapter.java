@@ -10,21 +10,28 @@ import javax.swing.JTextField;
  */
 public class FieldAdapter {
 
-    private final Map<Integer, Integer> fields;
+    private final Map<JTextField, Integer> fieldNumbers;
 
     public FieldAdapter() {
-        this.fields = new HashMap<>();
+        this.fieldNumbers = new HashMap<>();
     }
 
-    public Map<Integer, Integer> getFields() {
-        return fields;
+    public Map<JTextField, Integer> getFieldNumbers() {
+        return fieldNumbers;
     }
 
-    public void getNumericFromTextFields(JTextField[] textFields) {
+    public void getNumbersFromTextFields(JTextField... textFields) {
         for (JTextField textField : textFields) {
-            int hashCode = textField.hashCode();
-            int number = Integer.parseInt(textField.getText());
-            fields.put(hashCode, number);
+            Integer number = getNumberFromText(textField.getText());
+            fieldNumbers.put(textField, number);
+        }
+    }
+
+    private Integer getNumberFromText(String text) {
+        try {
+            return Integer.valueOf(text);
+        } catch (NumberFormatException e) {
+            return null;
         }
     }
 }

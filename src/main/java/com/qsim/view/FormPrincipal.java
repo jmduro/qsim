@@ -2,8 +2,11 @@ package com.qsim.view;
 
 import com.qsim.main.QSim;
 import com.qsim.model.FieldAdapter;
+import java.util.Map;
 import java.util.Random;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.math3.distribution.NormalDistribution;
 
 public class FormPrincipal extends javax.swing.JPanel {
 
@@ -73,35 +76,48 @@ public class FormPrincipal extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void calcularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcularButtonActionPerformed
-        // TODO add your handling code here:
-        FieldAdapter fieldAdapter = new FieldAdapter();
-        fieldAdapter.getNumericFromTextFields(
-                new javax.swing.JTextField[]{clientesField, servicioField, productosField, horasField});
-
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Hora");
-        modelo.addColumn("λ");
-        modelo.addColumn("μ");
-        modelo.addColumn("Total Clientes");
-
-        tasaServicio = fieldAdapter.getFields().get(servicioField.hashCode());
-
-        for (int i = 1; i <= fieldAdapter.getFields().get(horasField.hashCode()); i++) {
-            modelo.addRow(
-                    new Object[]{
-                        i,
-                        getLambda(fieldAdapter.getFields().get(clientesField.hashCode())),
-                        tasaServicio,
-                        "Prueba"});
-        }
-
-        QSim.frame.setContentPane(new DetalleSimulacion(modelo));
+        FieldAdapter adapter = createFieldAdapter();
+        DefaultTableModel model = createTableModel(adapter.getFieldNumbers());
+        QSim.frame.setContentPane(new DetalleSimulacion(model));
         QSim.frame.pack();
     }//GEN-LAST:event_calcularButtonActionPerformed
 
-    private int getLambda(int media) {
+    private FieldAdapter createFieldAdapter() {
+        FieldAdapter adapter = new FieldAdapter();
+        adapter.getNumbersFromTextFields(clientesField, servicioField, productosField, horasField);
+        return adapter;
+    }
+
+    private DefaultTableModel createTableModel(Map<JTextField, Integer> fieldNumbers) {
+        DefaultTableModel model = new DefaultTableModel();
+        addColumnsToTableModel(model);
+        addRowsToTableModel(model, fieldNumbers);
+        return model;
+    }
+
+    private void addColumnsToTableModel(DefaultTableModel model) {
+        model.addColumn("Hora");
+        model.addColumn("λ");
+        model.addColumn("μ");
+        model.addColumn("Total Clientes");
+    }
+
+    private void addRowsToTableModel(DefaultTableModel model, Map<JTextField, Integer> fieldNumbers) {
+        tasaServicio = fieldNumbers.get(servicioField);
+        for (int i = 1; i <= fieldNumbers.get(horasField); i++) {
+            model.addRow(
+                    new Object[]{
+                        i,
+                        getLambdaFromGaussDistribution(fieldNumbers.get(clientesField)),
+                        tasaServicio,
+                        "Prueba"});
+        }
+    }
+
+    private int getLambdaFromGaussDistribution(int media) {
         Random random = new Random();
-        int valorAleatorio = (int) Math.round(random.nextGaussian() * 5 + media);
+        double desviacionEstandar = Math.sqrt(media);
+        int valorAleatorio = (int) Math.round(random.nextGaussian() * desviacionEstandar + media);
         if (valorAleatorio <= 0) {
             valorAleatorio = 1;
         } else if (valorAleatorio >= tasaServicio) {
