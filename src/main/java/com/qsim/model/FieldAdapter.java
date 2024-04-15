@@ -10,7 +10,11 @@ import javax.swing.JTextField;
  */
 public class FieldAdapter {
 
-    public Map<Integer, Integer> fields = new HashMap<>();
+    private final Map<Integer, Integer> fields;
+
+    public FieldAdapter() {
+        this.fields = new HashMap<>();
+    }
 
     public Map<Integer, Integer> getFields() {
         return fields;
