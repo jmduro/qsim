@@ -6,17 +6,14 @@ import javax.swing.UIManager;
 public class QSim extends javax.swing.JFrame {
 
     public static javax.swing.JFrame frame;
-    
+
     /**
      * Creates new form QSim
      */
     public QSim() {
         initComponents();
         setPlatformLookAndFeel();
-        javax.swing.JPanel panel = new FormPrincipal();
-        setContentPane(panel);
-        pack();
-        frame = this;
+        setDefaultPanel();
     }
 
     private void setPlatformLookAndFeel() {
@@ -25,6 +22,13 @@ public class QSim extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(QSim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+    }
+
+    private void setDefaultPanel() {
+        javax.swing.JPanel panel = new FormPrincipal();
+        setContentPane(panel);
+        pack();
+        frame = this;
     }
 
     /**
