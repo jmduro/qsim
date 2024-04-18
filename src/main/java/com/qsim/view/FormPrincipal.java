@@ -1,16 +1,13 @@
 package com.qsim.view;
 
 import com.qsim.main.QSim;
-import com.qsim.model.FieldAdapter;
-import java.util.Map;
+import com.qsim.model.NumericFieldParser;
 import java.util.Random;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import org.apache.commons.math3.distribution.NormalDistribution;
 
 public class FormPrincipal extends javax.swing.JPanel {
 
-    private int tasaServicio;
+    private int serviceMean;
 
     /**
      * Creates new form FormPrincipal
@@ -28,20 +25,20 @@ public class FormPrincipal extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        clientesField = new javax.swing.JTextField();
+        customersField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        servicioField = new javax.swing.JTextField();
+        serviceField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        productosField = new javax.swing.JTextField();
+        productsField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        horasField = new javax.swing.JTextField();
-        calcularButton = new javax.swing.JButton();
+        hoursField = new javax.swing.JTextField();
+        calculateButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(363, 234));
         setLayout(null);
-        add(clientesField);
-        clientesField.setBounds(16, 63, 79, 27);
+        add(customersField);
+        customersField.setBounds(16, 63, 79, 27);
 
         jLabel1.setText("Media de clientes por hora:");
         add(jLabel1);
@@ -50,48 +47,47 @@ public class FormPrincipal extends javax.swing.JPanel {
         jLabel2.setText("Tiempo medio de servicio:");
         add(jLabel2);
         jLabel2.setBounds(193, 42, 154, 21);
-        add(servicioField);
-        servicioField.setBounds(193, 63, 79, 27);
+        add(serviceField);
+        serviceField.setBounds(193, 63, 79, 27);
 
         jLabel3.setText("Media de productos:");
         add(jLabel3);
         jLabel3.setBounds(16, 106, 121, 21);
-        add(productosField);
-        productosField.setBounds(16, 127, 79, 27);
+        add(productsField);
+        productsField.setBounds(16, 127, 79, 27);
 
         jLabel4.setText("Horas por simular:");
         add(jLabel4);
         jLabel4.setBounds(193, 106, 107, 21);
-        add(horasField);
-        horasField.setBounds(193, 127, 79, 27);
+        add(hoursField);
+        hoursField.setBounds(193, 127, 79, 27);
 
-        calcularButton.setText("Calcular");
-        calcularButton.addActionListener(new java.awt.event.ActionListener() {
+        calculateButton.setText("Calcular");
+        calculateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                calcularButtonActionPerformed(evt);
+                calculateButtonActionPerformed(evt);
             }
         });
-        add(calcularButton);
-        calcularButton.setBounds(145, 170, 73, 27);
+        add(calculateButton);
+        calculateButton.setBounds(145, 170, 73, 27);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void calcularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcularButtonActionPerformed
-        FieldAdapter adapter = createFieldAdapter();
-        DefaultTableModel model = createTableModel(adapter.getFieldNumbers());
-        QSim.frame.setContentPane(new DetalleSimulacion(model));
-        QSim.frame.pack();
-    }//GEN-LAST:event_calcularButtonActionPerformed
+    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        NumericFieldParser parser = createNumericFieldParser();
+        DefaultTableModel model = createTableModel(parser);
+        changePanel(model);
+    }//GEN-LAST:event_calculateButtonActionPerformed
 
-    private FieldAdapter createFieldAdapter() {
-        FieldAdapter adapter = new FieldAdapter();
-        adapter.getNumbersFromTextFields(clientesField, servicioField, productosField, horasField);
-        return adapter;
+    private NumericFieldParser createNumericFieldParser() {
+        NumericFieldParser parser = new NumericFieldParser();
+        parser.getNumbersFromTextFields(customersField, serviceField, productsField, hoursField);
+        return parser;
     }
 
-    private DefaultTableModel createTableModel(Map<JTextField, Integer> fieldNumbers) {
+    private DefaultTableModel createTableModel(NumericFieldParser parser) {
         DefaultTableModel model = new DefaultTableModel();
         addColumnsToTableModel(model);
-        addRowsToTableModel(model, fieldNumbers);
+        addRowsToTableModel(model, parser);
         return model;
     }
 
@@ -102,39 +98,44 @@ public class FormPrincipal extends javax.swing.JPanel {
         model.addColumn("Total Clientes");
     }
 
-    private void addRowsToTableModel(DefaultTableModel model, Map<JTextField, Integer> fieldNumbers) {
-        tasaServicio = fieldNumbers.get(servicioField);
-        for (int i = 1; i <= fieldNumbers.get(horasField); i++) {
+    private void addRowsToTableModel(DefaultTableModel model, NumericFieldParser parser) {
+        serviceMean = parser.getNumberOf(serviceField);
+        for (int hour = 1; hour <= parser.getNumberOf(hoursField); hour++) {
             model.addRow(
                     new Object[]{
-                        i,
-                        getLambdaFromGaussDistribution(fieldNumbers.get(clientesField)),
-                        tasaServicio,
+                        hour,
+                        getLambdaFromGaussDistribution(parser.getNumberOf(customersField)),
+                        serviceMean,
                         "Prueba"});
         }
     }
 
-    private int getLambdaFromGaussDistribution(int media) {
+    private int getLambdaFromGaussDistribution(int mean) {
         Random random = new Random();
-        double desviacionEstandar = Math.sqrt(media);
-        int valorAleatorio = (int) Math.round(random.nextGaussian() * desviacionEstandar + media);
-        if (valorAleatorio <= 0) {
-            valorAleatorio = 1;
-        } else if (valorAleatorio >= tasaServicio) {
-            valorAleatorio = tasaServicio - 1;
+        double standardDeviation = Math.sqrt(mean);
+        int randomValue = (int) Math.round(random.nextGaussian() * standardDeviation + mean);
+        if (randomValue <= 0) {
+            randomValue = 1;
+        } else if (randomValue >= serviceMean) {
+            randomValue = serviceMean - 1;
         }
-        return valorAleatorio;
+        return randomValue;
+    }
+
+    private void changePanel(DefaultTableModel model) {
+        QSim.frame.setContentPane(new DetalleSimulacion(model));
+        QSim.frame.pack();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton calcularButton;
-    private javax.swing.JTextField clientesField;
-    private javax.swing.JTextField horasField;
+    private javax.swing.JButton calculateButton;
+    private javax.swing.JTextField customersField;
+    private javax.swing.JTextField hoursField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField productosField;
-    private javax.swing.JTextField servicioField;
+    private javax.swing.JTextField productsField;
+    private javax.swing.JTextField serviceField;
     // End of variables declaration//GEN-END:variables
 }

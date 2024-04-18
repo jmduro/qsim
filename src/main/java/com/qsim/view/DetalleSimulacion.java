@@ -14,7 +14,7 @@ public class DetalleSimulacion extends javax.swing.JPanel {
     public DetalleSimulacion() {
         initComponents();
     }
-    
+
     public DetalleSimulacion(DefaultTableModel model) {
         this();
         table.setModel(model);

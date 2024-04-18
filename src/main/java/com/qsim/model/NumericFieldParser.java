@@ -8,22 +8,26 @@ import javax.swing.JTextField;
  *
  * @author aleja
  */
-public class FieldAdapter {
+public class NumericFieldParser {
 
-    private final Map<JTextField, Integer> fieldNumbers;
+    private final Map<JTextField, Integer> numericTextFieldValues;
 
-    public FieldAdapter() {
-        this.fieldNumbers = new HashMap<>();
+    public NumericFieldParser() {
+        this.numericTextFieldValues = new HashMap<>();
     }
 
-    public Map<JTextField, Integer> getFieldNumbers() {
-        return fieldNumbers;
+    public Map<JTextField, Integer> getNumericTextFieldValues() {
+        return numericTextFieldValues;
+    }
+    
+    public Integer getNumberOf(JTextField textField) {
+        return numericTextFieldValues.getOrDefault(textField, null);
     }
 
     public void getNumbersFromTextFields(JTextField... textFields) {
         for (JTextField textField : textFields) {
             Integer number = getNumberFromText(textField.getText());
-            fieldNumbers.put(textField, number);
+            numericTextFieldValues.put(textField, number);
         }
     }
 
