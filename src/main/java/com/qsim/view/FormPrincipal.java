@@ -80,7 +80,7 @@ public class FormPrincipal extends javax.swing.JPanel {
 
     private NumericFieldParser createNumericFieldParser() {
         NumericFieldParser parser = new NumericFieldParser();
-        parser.getNumbersFromTextFields(customersField, serviceField, productsField, hoursField);
+        parser.parseNumbersFromTextFields(customersField, serviceField, productsField, hoursField);
         return parser;
     }
 
@@ -99,14 +99,15 @@ public class FormPrincipal extends javax.swing.JPanel {
     }
 
     private void addRowsToTableModel(DefaultTableModel model, NumericFieldParser parser) {
-        serviceMean = parser.getNumberOf(serviceField);
-        for (int hour = 1; hour <= parser.getNumberOf(hoursField); hour++) {
+        serviceMean = parser.getIntegerFrom(serviceField);
+        for (int hour = 1; hour <= parser.getIntegerFrom(hoursField); hour++) {
             model.addRow(
                     new Object[]{
                         hour,
-                        getLambdaFromGaussDistribution(parser.getNumberOf(customersField)),
+                        getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField)),
                         serviceMean,
-                        "Prueba"});
+                        "Prueba"
+                    });
         }
     }
 

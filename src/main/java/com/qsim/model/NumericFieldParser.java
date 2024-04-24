@@ -10,30 +10,34 @@ import javax.swing.JTextField;
  */
 public class NumericFieldParser {
 
-    private final Map<JTextField, Integer> numericTextFieldValues;
+    private final Map<JTextField, Double> numericFieldValues;
 
     public NumericFieldParser() {
-        this.numericTextFieldValues = new HashMap<>();
+        this.numericFieldValues = new HashMap<>();
     }
 
-    public Map<JTextField, Integer> getNumericTextFieldValues() {
-        return numericTextFieldValues;
-    }
-    
-    public Integer getNumberOf(JTextField textField) {
-        return numericTextFieldValues.getOrDefault(textField, null);
+    public Double getDoubleFrom(JTextField field) {
+        return numericFieldValues.getOrDefault(field, null);
     }
 
-    public void getNumbersFromTextFields(JTextField... textFields) {
+    public Integer getIntegerFrom(JTextField field) {
+        Double d = getDoubleFrom(field);
+        if (d != null) {
+            return d.intValue();
+        }
+        return null;
+    }
+
+    public void parseNumbersFromTextFields(JTextField... textFields) {
         for (JTextField textField : textFields) {
-            Integer number = getNumberFromText(textField.getText());
-            numericTextFieldValues.put(textField, number);
+            Double number = parseNumberFromText(textField.getText());
+            numericFieldValues.put(textField, number);
         }
     }
 
-    private Integer getNumberFromText(String text) {
+    private Double parseNumberFromText(String text) {
         try {
-            return Integer.valueOf(text);
+            return Double.valueOf(text);
         } catch (NumberFormatException e) {
             return null;
         }
