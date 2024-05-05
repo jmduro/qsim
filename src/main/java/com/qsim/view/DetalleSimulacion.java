@@ -1,5 +1,10 @@
 package com.qsim.view;
 
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,12 +18,45 @@ public class DetalleSimulacion extends javax.swing.JPanel {
      */
     public DetalleSimulacion() {
         initComponents();
+        addListener();
     }
 
-    public DetalleSimulacion(DefaultTableModel model) {
-        this();
+    public void setModel(DefaultTableModel model) {
         table.setModel(model);
         repaint();
+    }
+
+    private void addListener() {
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedRow = table.getSelectedRow();
+                    if (selectedRow != -1) {
+                        showDetailDialog((int) table.getModel().getValueAt(selectedRow, 0)); // Pasar el ID del registro seleccionado
+                    }
+                }
+            }
+        });
+    }
+    
+    private void showDetailDialog(int selectedID) {
+        // Aquí deberías cargar los detalles del registro seleccionado y mostrarlos en una nueva JTable dentro de un JDialog
+        JDialog detailDialog = new JDialog(this, "Detalle del Registro", true);
+        DefaultTableModel detailTableModel = new DefaultTableModel();
+        detailTableModel.addColumn("ID");
+        detailTableModel.addColumn("Detalle");
+        // Agregar más columnas según los detalles que desees mostrar
+
+        // Aquí deberías cargar los detalles del registro seleccionado en detailTableModel
+
+        JTable detailTable = new JTable(detailTableModel);
+        JScrollPane scrollPane = new JScrollPane(detailTable);
+        detailDialog.add(scrollPane);
+
+        detailDialog.pack();
+        detailDialog.setLocationRelativeTo(this);
+        detailDialog.setVisible(true);
     }
 
     /**
@@ -36,22 +74,7 @@ public class DetalleSimulacion extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(363, 384));
         setLayout(null);
 
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Hora", "λ", "μ", "Total Clientes"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        table.setModel(null);
         jScrollPane1.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setResizable(false);
@@ -61,9 +84,8 @@ public class DetalleSimulacion extends javax.swing.JPanel {
         }
 
         add(jScrollPane1);
-        jScrollPane1.setBounds(16, 42, 331, 300);
+        jScrollPane1.setBounds(16, 42, 380, 350);
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

@@ -1,18 +1,25 @@
 package com.qsim.view;
 
-import com.qsim.main.QSim;
+import com.qsim.model.Customer;
+import com.qsim.model.Hour;
 import com.qsim.model.NumericFieldParser;
+import com.qsim.model.Product;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import javax.swing.table.DefaultTableModel;
 
 public class FormPrincipal extends javax.swing.JPanel {
 
     private int serviceMean;
+    private NumericFieldParser parser;
+    private final List<Product> productDatabase;
+    public static List<>
 
     /**
      * Creates new form FormPrincipal
      */
     public FormPrincipal() {
+        this.productDatabase = defaultProductData();
         initComponents();
     }
 
@@ -73,42 +80,90 @@ public class FormPrincipal extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        NumericFieldParser parser = createNumericFieldParser();
-        DefaultTableModel model = createTableModel(parser);
-        changePanel(model);
+        createNumericFieldParser();
+        createHours();
+        setPanel();
     }//GEN-LAST:event_calculateButtonActionPerformed
 
-    private NumericFieldParser createNumericFieldParser() {
-        NumericFieldParser parser = new NumericFieldParser();
+    private void createNumericFieldParser() {
+        parser = new NumericFieldParser();
         parser.parseNumbersFromTextFields(customersField, serviceField, productsField, hoursField);
-        return parser;
     }
 
-    private DefaultTableModel createTableModel(NumericFieldParser parser) {
-        DefaultTableModel model = new DefaultTableModel();
-        addColumnsToTableModel(model);
-        addRowsToTableModel(model, parser);
-        return model;
-    }
-
-    private void addColumnsToTableModel(DefaultTableModel model) {
-        model.addColumn("Hora");
-        model.addColumn("λ");
-        model.addColumn("μ");
-        model.addColumn("Total Clientes");
-    }
-
-    private void addRowsToTableModel(DefaultTableModel model, NumericFieldParser parser) {
-        serviceMean = parser.getIntegerFrom(serviceField);
-        for (int hour = 1; hour <= parser.getIntegerFrom(hoursField); hour++) {
-            model.addRow(
-                    new Object[]{
-                        hour,
-                        getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField)),
-                        serviceMean,
-                        "Prueba"
-                    });
+    private List<Hour> createHours() {
+        List<Hour> hours = new ArrayList<>();
+        for (int i = 1; i <= parser.getIntegerFrom(hoursField); i++) {
+            final int lambda = getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField));
+            hours.add(new Hour(
+                    i,
+                    lambda,
+                    parser.getIntegerFrom(serviceField),
+                    createCustomers()
+            )
+            );
         }
+        return hours;
+    }
+
+    private List<Customer> createCustomers() {
+        List<Customer> customers = new ArrayList<>();
+        int limit = parser.getIntegerFrom(customersField) / (parser.getIntegerFrom(serviceField) - parser.getIntegerFrom(customersField));
+        for (int i = 1; i <= limit; i++) {
+            customers.add(new Customer(i, createProducts()));
+        }
+        return customers;
+    }
+
+    private List<Product> createProducts() {
+        List<Product> products = new ArrayList<>();
+        for (int i = 1; i <= getRandomIntegerCloseTo(parser.getIntegerFrom(productsField)); i++) {
+            products.add(getRandomProduct());
+        }
+        return products;
+    }
+
+    private Product getRandomProduct() {
+        int numeroA = 0;
+        int numeroB = productDatabase.size() - 1;
+        Random random = new Random();
+        return productDatabase.get(random.nextInt(numeroB - numeroA + 1) + numeroA);
+    }
+
+    private List<Product> defaultProductData() {
+        ArrayList<Product> products = new ArrayList<>();
+
+        products.add(new Product(1, "Paracetamol", 5.0, 10.0));
+        products.add(new Product(2, "Ibuprofeno", 6.0, 12.0));
+        products.add(new Product(3, "Vitamina C", 3.0, 7.0));
+        products.add(new Product(4, "Analgésico", 4.0, 8.0));
+        products.add(new Product(5, "Antibiótico", 10.0, 20.0));
+        products.add(new Product(6, "Antiinflamatorio", 7.0, 15.0));
+        products.add(new Product(7, "Jarabe para la tos", 8.0, 16.0));
+        products.add(new Product(8, "Pastillas para la gripe", 9.0, 18.0));
+        products.add(new Product(9, "Colirio", 6.0, 12.0));
+        products.add(new Product(10, "Antiséptico", 5.0, 11.0));
+        products.add(new Product(11, "Crema antiarrugas", 15.0, 30.0));
+        products.add(new Product(12, "Protector solar", 12.0, 25.0));
+        products.add(new Product(13, "Loción hidratante", 8.0, 18.0));
+        products.add(new Product(14, "Shampoo anticaspa", 7.0, 14.0));
+        products.add(new Product(15, "Desodorante", 4.0, 9.0));
+        products.add(new Product(16, "Cepillo dental", 2.0, 5.0));
+        products.add(new Product(17, "Pasta dental", 3.0, 6.0));
+        products.add(new Product(18, "Enjuague bucal", 4.0, 8.0));
+        products.add(new Product(19, "Gasas estériles", 6.0, 12.0));
+        products.add(new Product(20, "Vendas elásticas", 7.0, 15.0));
+        products.add(new Product(21, "Algodón", 3.0, 7.0));
+        products.add(new Product(22, "Termómetro digital", 10.0, 20.0));
+        products.add(new Product(23, "Tijeras quirúrgicas", 15.0, 30.0));
+        products.add(new Product(24, "Guantes desechables", 8.0, 16.0));
+        products.add(new Product(25, "Mascarillas", 5.0, 11.0));
+        products.add(new Product(26, "Jeringas", 7.0, 15.0));
+        products.add(new Product(27, "Alcohol en gel", 6.0, 13.0));
+        products.add(new Product(28, "Pomada cicatrizante", 9.0, 19.0));
+        products.add(new Product(29, "Suplemento vitamínico", 12.0, 25.0));
+        products.add(new Product(30, "Gotas oftálmicas", 8.0, 17.0));
+
+        return products;
     }
 
     private int getLambdaFromGaussDistribution(int mean) {
@@ -123,9 +178,18 @@ public class FormPrincipal extends javax.swing.JPanel {
         return randomValue;
     }
 
-    private void changePanel(DefaultTableModel model) {
-        QSim.frame.setContentPane(new DetalleSimulacion(model));
-        QSim.frame.pack();
+    private int getRandomIntegerCloseTo(int base) {
+        int range = parser.getIntegerFrom(productsField) / 2;
+        Random random = new Random();
+        int randomNumber = 0;
+        for (int i = 0; i < 5; i++) {
+            randomNumber = base + random.nextInt(2 * range + 1) - range;
+        }
+        return randomNumber;
+    }
+
+    private void setPanel() {
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

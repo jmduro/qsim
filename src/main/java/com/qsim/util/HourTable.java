@@ -1,6 +1,6 @@
 package com.qsim.util;
 
-import com.qsim.model.Hora;
+import com.qsim.model.Hour;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -8,10 +8,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aleja
  */
-public class HourTable implements Table<Hora> {
+public class HourTable implements Table<Hour> {
 
     @Override
-    public DefaultTableModel createTableModel(List<Hora> hours) {
+    public DefaultTableModel createTableModel(List<Hour> hours) {
         DefaultTableModel model = new DefaultTableModel();
         addColumns(model);
         addRows(model, hours);
@@ -25,16 +25,14 @@ public class HourTable implements Table<Hora> {
         model.addColumn("Total Clientes");
     }
 
-    private void addRows(DefaultTableModel model, List<Hora> hours) {
-        int id = 1;
+    private void addRows(DefaultTableModel model, List<Hour> hours) {
         for (var hour : hours) {
             model.addRow(new Object[]{
-                id,
+                hour.id(),
                 hour.tasaLlegadas(),
                 hour.tasaServicio(),
                 hour.clientes().size()
             });
-            id++;
         }
     }
 }
