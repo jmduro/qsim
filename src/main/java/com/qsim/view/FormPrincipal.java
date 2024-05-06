@@ -17,6 +17,8 @@ public class FormPrincipal extends javax.swing.JPanel {
     private int serviceMean;
     private NumericFieldParser parser;
     private final List<Product> productDatabase;
+    public static List<Hour> hours;
+    public static int stack = 0;
 
     /**
      * Creates new form FormPrincipal
@@ -84,7 +86,7 @@ public class FormPrincipal extends javax.swing.JPanel {
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         createNumericFieldParser();
-        List<Hour> hours = createHours();
+        createHours();
         printHours(hours);
         createTableModel(hours);
     }//GEN-LAST:event_calculateButtonActionPerformed
@@ -108,7 +110,7 @@ public class FormPrincipal extends javax.swing.JPanel {
     }
 
     private List<Hour> createHours() {
-        List<Hour> hours = new ArrayList<>();
+        hours = new ArrayList<>();
         for (int i = 1; i <= parser.getIntegerFrom(hoursField); i++) {
             int lambda = getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField));
             hours.add(new Hour(
@@ -124,7 +126,12 @@ public class FormPrincipal extends javax.swing.JPanel {
 
     private List<Customer> createCustomers() {
         List<Customer> customers = new ArrayList<>();
-        int lambda = getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField));
+        int lambda = getRandomIntegerCloseTo(parser.getIntegerFrom(customersField));
+        if (lambda <= 0) {
+            lambda = 1;
+        } else if (lambda >= serviceMean) {
+            lambda = serviceMean - 1;
+        }
         int limit = lambda / (parser.getIntegerFrom(serviceField) - lambda);
         for (int i = 1; i <= limit; i++) {
             customers.add(new Customer(i, createProducts()));

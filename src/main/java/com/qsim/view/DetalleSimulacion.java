@@ -1,7 +1,10 @@
 package com.qsim.view;
 
+import com.qsim.util.CustomerTableModel;
+import com.qsim.util.ProductTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -10,6 +13,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DetalleSimulacion extends javax.swing.JPanel {
 
+    private static int activeHourId;
+    private CustomDialog dialogPointer;
+    
     /**
      * Creates new form DetalleHora
      */
@@ -18,16 +24,47 @@ public class DetalleSimulacion extends javax.swing.JPanel {
     }
 
     public void setModel(DefaultTableModel model) {
-        JTable tabla = new JTable(model);
+        JTable table = new JTable(model);
+        JScrollPane panel = new JScrollPane(table);
+        panel.setSize(tablePanel.getSize());
         
-        JScrollPane panel = new JScrollPane(tabla);
-
         tablePanel.removeAll();
         tablePanel.add(panel);
         tablePanel.repaint();
-
-        System.out.println("Prueba");
-        System.out.println("Columnas: " + tabla.getColumnCount());
+        
+        table.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    showDetailDialog((int) table.getValueAt(selectedRow, 0) - 1);
+                }
+            }
+        });
+    }
+    
+    private void showDetailDialog(int selectedId) {
+        FormPrincipal.stack++;
+        DetalleSimulacion detailPanel = new DetalleSimulacion();
+        
+        if (FormPrincipal.stack == 1) {
+            CustomerTableModel customerTableModel = new CustomerTableModel();
+            DefaultTableModel model = customerTableModel.createTableModel(FormPrincipal.hours.get(selectedId).clientes());
+            activeHourId = selectedId;
+            detailPanel.setModel(model);
+        }
+        if (FormPrincipal.stack == 2) {
+            ProductTableModel productTableModel = new ProductTableModel();
+            DefaultTableModel model = productTableModel.createTableModel(FormPrincipal.hours.get(activeHourId).clientes().get(selectedId).productos());
+            detailPanel.setModel(model);
+        }
+        
+        CustomDialog detailDialog = new CustomDialog();
+        detailDialog.setContentPane(detailPanel);
+        detailDialog.pack();
+        detailDialog.setVisible(true);
+        
+        dialogPointer = detailDialog;
+        System.out.println(dialogPointer);
     }
 
     /**
@@ -40,14 +77,32 @@ public class DetalleSimulacion extends javax.swing.JPanel {
     private void initComponents() {
 
         tablePanel = new javax.swing.JPanel();
+        cerrarButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(410, 470));
         setLayout(null);
+
+        tablePanel.setLayout(null);
         add(tablePanel);
         tablePanel.setBounds(20, 40, 370, 350);
+
+        cerrarButton.setText("Cerrar");
+        cerrarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarButtonActionPerformed(evt);
+            }
+        });
+        add(cerrarButton);
+        cerrarButton.setBounds(20, 400, 72, 23);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cerrarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarButtonActionPerformed
+        FormPrincipal.stack--;
+        // dialogPointer.dispose();
+    }//GEN-LAST:event_cerrarButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cerrarButton;
     private javax.swing.JPanel tablePanel;
     // End of variables declaration//GEN-END:variables
 }
