@@ -1,19 +1,22 @@
 package com.qsim.view;
 
+import com.qsim.main.QSim;
 import com.qsim.model.Customer;
 import com.qsim.model.Hour;
 import com.qsim.model.NumericFieldParser;
 import com.qsim.model.Product;
+import com.qsim.util.HourTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.JDialog;
+import javax.swing.table.DefaultTableModel;
 
 public class FormPrincipal extends javax.swing.JPanel {
 
     private int serviceMean;
     private NumericFieldParser parser;
     private final List<Product> productDatabase;
-    public static List<>
 
     /**
      * Creates new form FormPrincipal
@@ -81,19 +84,33 @@ public class FormPrincipal extends javax.swing.JPanel {
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         createNumericFieldParser();
-        createHours();
-        setPanel();
+        List<Hour> hours = createHours();
+        printHours(hours);
+        createTableModel(hours);
     }//GEN-LAST:event_calculateButtonActionPerformed
+
+    private void printHours(List<Hour> hours) {
+        for (var hour : hours) {
+            System.out.println("Hora: " + hour.id() + " | " + hour.tasaLlegadas() + " | " + hour.tasaServicio() + " | " + hour.clientes());
+        }
+    }
+
+    private void createTableModel(List<Hour> hours) {
+        HourTableModel hourModel = new HourTableModel();
+        DefaultTableModel tableModel = hourModel.createTableModel(hours);
+        setPanel(tableModel);
+    }
 
     private void createNumericFieldParser() {
         parser = new NumericFieldParser();
         parser.parseNumbersFromTextFields(customersField, serviceField, productsField, hoursField);
+        serviceMean = parser.getIntegerFrom(serviceField);
     }
 
     private List<Hour> createHours() {
         List<Hour> hours = new ArrayList<>();
         for (int i = 1; i <= parser.getIntegerFrom(hoursField); i++) {
-            final int lambda = getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField));
+            int lambda = getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField));
             hours.add(new Hour(
                     i,
                     lambda,
@@ -107,7 +124,8 @@ public class FormPrincipal extends javax.swing.JPanel {
 
     private List<Customer> createCustomers() {
         List<Customer> customers = new ArrayList<>();
-        int limit = parser.getIntegerFrom(customersField) / (parser.getIntegerFrom(serviceField) - parser.getIntegerFrom(customersField));
+        int lambda = getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField));
+        int limit = lambda / (parser.getIntegerFrom(serviceField) - lambda);
         for (int i = 1; i <= limit; i++) {
             customers.add(new Customer(i, createProducts()));
         }
@@ -123,10 +141,10 @@ public class FormPrincipal extends javax.swing.JPanel {
     }
 
     private Product getRandomProduct() {
-        int numeroA = 0;
-        int numeroB = productDatabase.size() - 1;
+        int numA = 0;
+        int numB = productDatabase.size() - 1;
         Random random = new Random();
-        return productDatabase.get(random.nextInt(numeroB - numeroA + 1) + numeroA);
+        return productDatabase.get(random.nextInt(numB - numA + 1) + numA);
     }
 
     private List<Product> defaultProductData() {
@@ -188,8 +206,17 @@ public class FormPrincipal extends javax.swing.JPanel {
         return randomNumber;
     }
 
-    private void setPanel() {
+    private void setPanel(DefaultTableModel model) {
+        System.out.println("Prueba");
 
+        DetalleSimulacion detalle = new DetalleSimulacion();
+
+        JDialog dialog = new JDialog(QSim.frame);
+        dialog.setContentPane(detalle);
+        dialog.pack();
+        dialog.setVisible(true);
+
+        detalle.setModel(model);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

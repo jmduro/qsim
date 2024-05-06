@@ -1,6 +1,13 @@
 com\qsim\view\DetalleSimulacion.class
-com\qsim\view\FormPrincipal.class
-com\qsim\view\DetalleSimulacion$1.class
-com\qsim\model\NumericFieldParser.class
-com\qsim\view\FormPrincipal$1.class
+com\qsim\model\Product.class
 com\qsim\main\QSim.class
+com\qsim\model\Customer.class
+com\qsim\util\CustomerTableModel.class
+com\qsim\util\HourTableModel$1.class
+com\qsim\model\Hour.class
+com\qsim\util\TableModel.class
+com\qsim\view\FormPrincipal$1.class
+com\qsim\util\ProductTableModel.class
+com\qsim\view\FormPrincipal.class
+com\qsim\util\HourTableModel.class
+com\qsim\model\NumericFieldParser.class

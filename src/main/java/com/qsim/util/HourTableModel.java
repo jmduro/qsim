@@ -8,11 +8,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aleja
  */
-public class HourTable implements Table<Hour> {
+public class HourTableModel implements TableModel<Hour> {
 
     @Override
     public DefaultTableModel createTableModel(List<Hour> hours) {
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         addColumns(model);
         addRows(model, hours);
         return model;

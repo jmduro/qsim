@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aleja
  */
-public class ProductTable implements Table<Product> {
+public class ProductTableModel implements TableModel<Product> {
 
     @Override
     public DefaultTableModel createTableModel(List<Product> entities) {

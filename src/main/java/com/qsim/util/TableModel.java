@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
  * @author aleja
  * @param <T>
  */
-public interface Table<T> {
+public interface TableModel<T> {
 
     DefaultTableModel createTableModel(List<T> entities);
 }

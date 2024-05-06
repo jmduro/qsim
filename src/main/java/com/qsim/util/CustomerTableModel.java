@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aleja
  */
-public class CustomerTable implements Table<Customer>{
+public class CustomerTableModel implements TableModel<Customer>{
 
     @Override
     public DefaultTableModel createTableModel(List<Customer> entities) {
