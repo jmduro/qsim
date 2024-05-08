@@ -106,6 +106,7 @@ public class InventarioForm extends javax.swing.JPanel {
         comprobarNombre();
         comprobarPrecioCompra(parser.getDoubleFrom(precioCompraTextField));
         comprobarPrecioVenta(parser.getDoubleFrom(precioVentaTextField));
+        // Aquí se guarda la lista (memoria) a archivo binario (persistente).
     }//GEN-LAST:event_guardarButtonActionPerformed
 
     private void comprobarId(int id) {

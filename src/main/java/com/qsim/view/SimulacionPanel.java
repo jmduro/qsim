@@ -23,20 +23,20 @@ public class SimulacionPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        customersField = new javax.swing.JTextField();
+        mediaClientesText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        serviceField = new javax.swing.JTextField();
+        mediaServicioTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        productsField = new javax.swing.JTextField();
+        mediaProductosTextField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        hoursField = new javax.swing.JTextField();
-        calculateButton = new javax.swing.JButton();
+        horasPorSimularTextField = new javax.swing.JTextField();
+        calcularButton = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(330, 230));
         setLayout(null);
-        add(customersField);
-        customersField.setBounds(210, 20, 100, 30);
+        add(mediaClientesText);
+        mediaClientesText.setBounds(210, 20, 100, 30);
 
         jLabel1.setText("Media de clientes por hora:");
         add(jLabel1);
@@ -45,36 +45,46 @@ public class SimulacionPanel extends javax.swing.JPanel {
         jLabel2.setText("Tiempo medio de servicio:");
         add(jLabel2);
         jLabel2.setBounds(20, 60, 160, 30);
-        add(serviceField);
-        serviceField.setBounds(210, 60, 100, 30);
+        add(mediaServicioTextField);
+        mediaServicioTextField.setBounds(210, 60, 100, 30);
 
         jLabel3.setText("Media de productos:");
         add(jLabel3);
         jLabel3.setBounds(20, 140, 160, 30);
-        add(productsField);
-        productsField.setBounds(210, 140, 100, 30);
+        add(mediaProductosTextField);
+        mediaProductosTextField.setBounds(210, 140, 100, 30);
 
         jLabel4.setText("Horas por simular:");
         add(jLabel4);
         jLabel4.setBounds(20, 100, 160, 30);
-        add(hoursField);
-        hoursField.setBounds(210, 100, 100, 30);
+        add(horasPorSimularTextField);
+        horasPorSimularTextField.setBounds(210, 100, 100, 30);
 
-        calculateButton.setText("Calcular");
-        add(calculateButton);
-        calculateButton.setBounds(210, 180, 100, 30);
+        calcularButton.setText("Calcular");
+        calcularButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcularButtonActionPerformed(evt);
+            }
+        });
+        add(calcularButton);
+        calcularButton.setBounds(210, 180, 100, 30);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void calcularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcularButtonActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_calcularButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton calculateButton;
-    private javax.swing.JTextField customersField;
-    private javax.swing.JTextField hoursField;
+    private javax.swing.JButton calcularButton;
+    private javax.swing.JTextField horasPorSimularTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField productsField;
-    private javax.swing.JTextField serviceField;
+    private javax.swing.JTextField mediaClientesText;
+    private javax.swing.JTextField mediaProductosTextField;
+    private javax.swing.JTextField mediaServicioTextField;
     // End of variables declaration//GEN-END:variables
 }

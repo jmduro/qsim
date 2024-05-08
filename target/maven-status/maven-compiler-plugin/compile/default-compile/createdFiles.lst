@@ -6,11 +6,11 @@ com\qsim\test\RegistrosInventario.class
 com\qsim\util\HoraTableModel.class
 com\qsim\view\InventarioForm.class
 com\qsim\model\Hora.class
+com\qsim\view\InventarioForm$2.class
 com\qsim\view\GastoForm.class
 com\qsim\view\FormPrincipal$2.class
 com\qsim\util\TableBuilder$1.class
 com\qsim\view\EscenarioPanel.class
-com\qsim\view\CustomDialog.class
 com\qsim\util\ClienteTableModel.class
 com\qsim\util\TableFactory.class
 com\qsim\view\InventarioPanel$1.class
@@ -18,7 +18,6 @@ com\qsim\view\FormPrincipal$1.class
 com\qsim\model\Cliente.class
 com\qsim\view\FormPrincipal.class
 com\qsim\model\NumericFieldParser.class
-com\qsim\view\CustomDialog$1.class
 com\qsim\model\Producto.class
 com\qsim\util\ProductoTableModel.class
 com\qsim\util\TableBuilder.class
