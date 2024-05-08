@@ -1,23 +1,24 @@
 package com.qsim.view;
 
 import com.qsim.main.QSim;
-import com.qsim.model.Customer;
-import com.qsim.model.Hour;
+import com.qsim.model.Hora;
 import com.qsim.model.NumericFieldParser;
-import com.qsim.model.Product;
-import com.qsim.util.HourTableModel;
+import com.qsim.model.Producto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javax.swing.JDialog;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JPanel;
 
 public class FormPrincipal extends javax.swing.JPanel {
 
+    private static final int ANCHO_MINIMO = 170;
+    private static final int ALTO_MINIMO = 230;
+    private static final int RELLENO = 40;
+
     private int serviceMean;
     private NumericFieldParser parser;
-    private final List<Product> productDatabase;
-    public static List<Hour> hours;
+    private final List<Producto> productDatabase;
+    public static List<Hora> hours;
     public static int stack = 0;
 
     /**
@@ -26,6 +27,8 @@ public class FormPrincipal extends javax.swing.JPanel {
     public FormPrincipal() {
         this.productDatabase = defaultProductData();
         initComponents();
+        mainPanel.setSize(0, 0);
+        setSize(ANCHO_MINIMO, ALTO_MINIMO);
     }
 
     /**
@@ -37,156 +40,126 @@ public class FormPrincipal extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        customersField = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        serviceField = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        productsField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        hoursField = new javax.swing.JTextField();
-        calculateButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        simulacionButton = new javax.swing.JButton();
+        gastosButton = new javax.swing.JButton();
+        inventarioButton = new javax.swing.JButton();
+        mainPanel = new javax.swing.JPanel();
 
-        setPreferredSize(new java.awt.Dimension(363, 234));
+        setPreferredSize(new java.awt.Dimension(170, 230));
         setLayout(null);
-        add(customersField);
-        customersField.setBounds(16, 63, 79, 27);
 
-        jLabel1.setText("Media de clientes por hora:");
-        add(jLabel1);
-        jLabel1.setBounds(16, 42, 161, 21);
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("QSim");
+        add(jLabel5);
+        jLabel5.setBounds(20, 20, 130, 40);
 
-        jLabel2.setText("Tiempo medio de servicio:");
-        add(jLabel2);
-        jLabel2.setBounds(193, 42, 154, 21);
-        add(serviceField);
-        serviceField.setBounds(193, 63, 79, 27);
-
-        jLabel3.setText("Media de productos:");
-        add(jLabel3);
-        jLabel3.setBounds(16, 106, 121, 21);
-        add(productsField);
-        productsField.setBounds(16, 127, 79, 27);
-
-        jLabel4.setText("Horas por simular:");
-        add(jLabel4);
-        jLabel4.setBounds(193, 106, 107, 21);
-        add(hoursField);
-        hoursField.setBounds(193, 127, 79, 27);
-
-        calculateButton.setText("Calcular");
-        calculateButton.addActionListener(new java.awt.event.ActionListener() {
+        simulacionButton.setText("Simulación");
+        simulacionButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                calculateButtonActionPerformed(evt);
+                simulacionButtonActionPerformed(evt);
             }
         });
-        add(calculateButton);
-        calculateButton.setBounds(145, 170, 73, 27);
+        add(simulacionButton);
+        simulacionButton.setBounds(20, 70, 130, 40);
+
+        gastosButton.setText("Gastos");
+        gastosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gastosButtonActionPerformed(evt);
+            }
+        });
+        add(gastosButton);
+        gastosButton.setBounds(20, 120, 130, 40);
+
+        inventarioButton.setText("Inventario");
+        inventarioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inventarioButtonActionPerformed(evt);
+            }
+        });
+        add(inventarioButton);
+        inventarioButton.setBounds(20, 170, 130, 40);
+
+        mainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        mainPanel.setLayout(null);
+        add(mainPanel);
+        mainPanel.setBounds(170, 20, 300, 300);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        createNumericFieldParser();
-        createHours();
-        printHours(hours);
-        createTableModel(hours);
-    }//GEN-LAST:event_calculateButtonActionPerformed
+    private void simulacionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulacionButtonActionPerformed
+        reemplazarPanel(new SimulacionPanel());
+    }//GEN-LAST:event_simulacionButtonActionPerformed
 
-    private void printHours(List<Hour> hours) {
+    private void gastosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gastosButtonActionPerformed
+        // equis de
+    }//GEN-LAST:event_gastosButtonActionPerformed
+
+    private void inventarioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventarioButtonActionPerformed
+        reemplazarPanel(new InventarioPanel());
+    }//GEN-LAST:event_inventarioButtonActionPerformed
+    
+    public void reemplazarPanel(JPanel nuevoPanel) {
+        mainPanel.removeAll();
+        mainPanel.setSize(nuevoPanel.getSize());
+        mainPanel.add(nuevoPanel);
+        mainPanel.repaint();
+
+        int ancho = ANCHO_MINIMO + mainPanel.getWidth() + RELLENO; // Un relleno separa controles y vista actual.
+        int alto = Math.max(ALTO_MINIMO, mainPanel.getHeight() + 2 * RELLENO); // Altura del panel más dos rellenos.
+
+        setSize(ancho, alto);
+        QSim.frame.setSize(ancho, alto);
+        QSim.frame.setLocationRelativeTo(null);
+    }
+
+    private void printHours(List<Hora> hours) {
         for (var hour : hours) {
             System.out.println("Hora: " + hour.id() + " | " + hour.tasaLlegadas() + " | " + hour.tasaServicio() + " | " + hour.clientes());
         }
     }
 
-    private void createTableModel(List<Hour> hours) {
-        HourTableModel hourModel = new HourTableModel();
-        DefaultTableModel tableModel = hourModel.createTableModel(hours);
-        setPanel(tableModel);
-    }
-
-    private void createNumericFieldParser() {
-        parser = new NumericFieldParser();
-        parser.parseNumbersFromTextFields(customersField, serviceField, productsField, hoursField);
-        serviceMean = parser.getIntegerFrom(serviceField);
-    }
-
-    private List<Hour> createHours() {
-        hours = new ArrayList<>();
-        for (int i = 1; i <= parser.getIntegerFrom(hoursField); i++) {
-            int lambda = getLambdaFromGaussDistribution(parser.getIntegerFrom(customersField));
-            hours.add(new Hour(
-                    i,
-                    lambda,
-                    parser.getIntegerFrom(serviceField),
-                    createCustomers()
-            )
-            );
-        }
-        return hours;
-    }
-
-    private List<Customer> createCustomers() {
-        List<Customer> customers = new ArrayList<>();
-        int lambda = getRandomIntegerCloseTo(parser.getIntegerFrom(customersField));
-        if (lambda <= 0) {
-            lambda = 1;
-        } else if (lambda >= serviceMean) {
-            lambda = serviceMean - 1;
-        }
-        int limit = lambda / (parser.getIntegerFrom(serviceField) - lambda);
-        for (int i = 1; i <= limit; i++) {
-            customers.add(new Customer(i, createProducts()));
-        }
-        return customers;
-    }
-
-    private List<Product> createProducts() {
-        List<Product> products = new ArrayList<>();
-        for (int i = 1; i <= getRandomIntegerCloseTo(parser.getIntegerFrom(productsField)); i++) {
-            products.add(getRandomProduct());
-        }
-        return products;
-    }
-
-    private Product getRandomProduct() {
+    private Producto getRandomProduct() {
         int numA = 0;
         int numB = productDatabase.size() - 1;
         Random random = new Random();
         return productDatabase.get(random.nextInt(numB - numA + 1) + numA);
     }
 
-    private List<Product> defaultProductData() {
-        ArrayList<Product> products = new ArrayList<>();
+    private List<Producto> defaultProductData() {
+        ArrayList<Producto> products = new ArrayList<>();
 
-        products.add(new Product(1, "Paracetamol", 5.0, 10.0));
-        products.add(new Product(2, "Ibuprofeno", 6.0, 12.0));
-        products.add(new Product(3, "Vitamina C", 3.0, 7.0));
-        products.add(new Product(4, "Analgésico", 4.0, 8.0));
-        products.add(new Product(5, "Antibiótico", 10.0, 20.0));
-        products.add(new Product(6, "Antiinflamatorio", 7.0, 15.0));
-        products.add(new Product(7, "Jarabe para la tos", 8.0, 16.0));
-        products.add(new Product(8, "Pastillas para la gripe", 9.0, 18.0));
-        products.add(new Product(9, "Colirio", 6.0, 12.0));
-        products.add(new Product(10, "Antiséptico", 5.0, 11.0));
-        products.add(new Product(11, "Crema antiarrugas", 15.0, 30.0));
-        products.add(new Product(12, "Protector solar", 12.0, 25.0));
-        products.add(new Product(13, "Loción hidratante", 8.0, 18.0));
-        products.add(new Product(14, "Shampoo anticaspa", 7.0, 14.0));
-        products.add(new Product(15, "Desodorante", 4.0, 9.0));
-        products.add(new Product(16, "Cepillo dental", 2.0, 5.0));
-        products.add(new Product(17, "Pasta dental", 3.0, 6.0));
-        products.add(new Product(18, "Enjuague bucal", 4.0, 8.0));
-        products.add(new Product(19, "Gasas estériles", 6.0, 12.0));
-        products.add(new Product(20, "Vendas elásticas", 7.0, 15.0));
-        products.add(new Product(21, "Algodón", 3.0, 7.0));
-        products.add(new Product(22, "Termómetro digital", 10.0, 20.0));
-        products.add(new Product(23, "Tijeras quirúrgicas", 15.0, 30.0));
-        products.add(new Product(24, "Guantes desechables", 8.0, 16.0));
-        products.add(new Product(25, "Mascarillas", 5.0, 11.0));
-        products.add(new Product(26, "Jeringas", 7.0, 15.0));
-        products.add(new Product(27, "Alcohol en gel", 6.0, 13.0));
-        products.add(new Product(28, "Pomada cicatrizante", 9.0, 19.0));
-        products.add(new Product(29, "Suplemento vitamínico", 12.0, 25.0));
-        products.add(new Product(30, "Gotas oftálmicas", 8.0, 17.0));
+        products.add(new Producto(1, "Paracetamol", 5.0, 10.0));
+        products.add(new Producto(2, "Ibuprofeno", 6.0, 12.0));
+        products.add(new Producto(3, "Vitamina C", 3.0, 7.0));
+        products.add(new Producto(4, "Analgésico", 4.0, 8.0));
+        products.add(new Producto(5, "Antibiótico", 10.0, 20.0));
+        products.add(new Producto(6, "Antiinflamatorio", 7.0, 15.0));
+        products.add(new Producto(7, "Jarabe para la tos", 8.0, 16.0));
+        products.add(new Producto(8, "Pastillas para la gripe", 9.0, 18.0));
+        products.add(new Producto(9, "Colirio", 6.0, 12.0));
+        products.add(new Producto(10, "Antiséptico", 5.0, 11.0));
+        products.add(new Producto(11, "Crema antiarrugas", 15.0, 30.0));
+        products.add(new Producto(12, "Protector solar", 12.0, 25.0));
+        products.add(new Producto(13, "Loción hidratante", 8.0, 18.0));
+        products.add(new Producto(14, "Shampoo anticaspa", 7.0, 14.0));
+        products.add(new Producto(15, "Desodorante", 4.0, 9.0));
+        products.add(new Producto(16, "Cepillo dental", 2.0, 5.0));
+        products.add(new Producto(17, "Pasta dental", 3.0, 6.0));
+        products.add(new Producto(18, "Enjuague bucal", 4.0, 8.0));
+        products.add(new Producto(19, "Gasas estériles", 6.0, 12.0));
+        products.add(new Producto(20, "Vendas elásticas", 7.0, 15.0));
+        products.add(new Producto(21, "Algodón", 3.0, 7.0));
+        products.add(new Producto(22, "Termómetro digital", 10.0, 20.0));
+        products.add(new Producto(23, "Tijeras quirúrgicas", 15.0, 30.0));
+        products.add(new Producto(24, "Guantes desechables", 8.0, 16.0));
+        products.add(new Producto(25, "Mascarillas", 5.0, 11.0));
+        products.add(new Producto(26, "Jeringas", 7.0, 15.0));
+        products.add(new Producto(27, "Alcohol en gel", 6.0, 13.0));
+        products.add(new Producto(28, "Pomada cicatrizante", 9.0, 19.0));
+        products.add(new Producto(29, "Suplemento vitamínico", 12.0, 25.0));
+        products.add(new Producto(30, "Gotas oftálmicas", 8.0, 17.0));
 
         return products;
     }
@@ -203,38 +176,11 @@ public class FormPrincipal extends javax.swing.JPanel {
         return randomValue;
     }
 
-    private int getRandomIntegerCloseTo(int base) {
-        int range = parser.getIntegerFrom(productsField) / 2;
-        Random random = new Random();
-        int randomNumber = 0;
-        for (int i = 0; i < 5; i++) {
-            randomNumber = base + random.nextInt(2 * range + 1) - range;
-        }
-        return randomNumber;
-    }
-
-    private void setPanel(DefaultTableModel model) {
-        System.out.println("Prueba");
-
-        DetalleSimulacion detalle = new DetalleSimulacion();
-
-        JDialog dialog = new JDialog(QSim.frame);
-        dialog.setContentPane(detalle);
-        dialog.pack();
-        dialog.setVisible(true);
-
-        detalle.setModel(model);
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton calculateButton;
-    private javax.swing.JTextField customersField;
-    private javax.swing.JTextField hoursField;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField productsField;
-    private javax.swing.JTextField serviceField;
+    private javax.swing.JButton gastosButton;
+    private javax.swing.JButton inventarioButton;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JButton simulacionButton;
     // End of variables declaration//GEN-END:variables
 }

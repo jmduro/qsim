@@ -1,6 +1,6 @@
 package com.qsim.util;
 
-import com.qsim.model.Customer;
+import com.qsim.model.Cliente;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -8,26 +8,20 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author aleja
  */
-public class CustomerTableModel implements TableModel<Customer>{
+public class ClienteTableModel extends TableBuilder<Cliente>{
 
     @Override
-    public DefaultTableModel createTableModel(List<Customer> entities) {
-        DefaultTableModel model = new DefaultTableModel();
-        addColumns(model);
-        addRows(model, entities);
-        return model;
-    }
-
-    private void addColumns(DefaultTableModel model) {
+    protected void addColumns(DefaultTableModel model) {
         model.addColumn("No.");
         model.addColumn("Total Productos");
         model.addColumn("Total Precio Compra");
         model.addColumn("Total Precio Venta");
     }
 
-    private void addRows(DefaultTableModel model, List<Customer> entities) {
+    @Override
+    protected void addRows(DefaultTableModel model, List<Cliente> entities) {
         int id = 1;
-        for (Customer customer : entities) {
+        for (Cliente customer : entities) {
             model.addRow(new Object[]{
                 id,
                 customer.productos().size(),

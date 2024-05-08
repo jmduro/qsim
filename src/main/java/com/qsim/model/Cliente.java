@@ -6,6 +6,6 @@ import java.util.List;
  *
  * @author aleja
  */
-public record Customer(Integer id, List<Product> productos) {
+public record Cliente(Integer id, List<Producto> productos) {
 
 }
