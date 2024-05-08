@@ -1,5 +1,7 @@
 package com.qsim.view;
 
+import com.qsim.model.NumericFieldParser;
+
 /**
  *
  * @author aleja
@@ -23,7 +25,7 @@ public class SimulacionPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mediaClientesText = new javax.swing.JTextField();
+        mediaClientesTextField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         mediaServicioTextField = new javax.swing.JTextField();
@@ -35,8 +37,8 @@ public class SimulacionPanel extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(330, 230));
         setLayout(null);
-        add(mediaClientesText);
-        mediaClientesText.setBounds(210, 20, 100, 30);
+        add(mediaClientesTextField);
+        mediaClientesTextField.setBounds(210, 20, 100, 30);
 
         jLabel1.setText("Media de clientes por hora:");
         add(jLabel1);
@@ -50,15 +52,15 @@ public class SimulacionPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Media de productos:");
         add(jLabel3);
-        jLabel3.setBounds(20, 140, 160, 30);
+        jLabel3.setBounds(20, 100, 160, 30);
         add(mediaProductosTextField);
-        mediaProductosTextField.setBounds(210, 140, 100, 30);
+        mediaProductosTextField.setBounds(210, 100, 100, 30);
 
         jLabel4.setText("Horas por simular:");
         add(jLabel4);
-        jLabel4.setBounds(20, 100, 160, 30);
+        jLabel4.setBounds(20, 140, 160, 30);
         add(horasPorSimularTextField);
-        horasPorSimularTextField.setBounds(210, 100, 100, 30);
+        horasPorSimularTextField.setBounds(210, 140, 100, 30);
 
         calcularButton.setText("Calcular");
         calcularButton.addActionListener(new java.awt.event.ActionListener() {
@@ -72,9 +74,25 @@ public class SimulacionPanel extends javax.swing.JPanel {
 
     private void calcularButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcularButtonActionPerformed
         // TODO add your handling code here:
-        
+        NumericFieldParser parser = new NumericFieldParser();
+        parser.parseNumbersFromTextFields(mediaClientesTextField, mediaServicioTextField, mediaProductosTextField, horasPorSimularTextField);
+
+        // comprobarMediaClientes(parser.getIntegerFrom(mediaClientesTextField));
+        // comprobarMediaServicio();
+        // comprobarMediaProductos();
+        // comprobarHorasPorSimular();
+
     }//GEN-LAST:event_calcularButtonActionPerformed
 
+    private void comprobarMediaClientes(Integer mediaClientes) {
+        if (mediaClientes == null) {
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    private void comprobarMediaServicio(Integer mediaServicio) {
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calcularButton;
@@ -83,7 +101,7 @@ public class SimulacionPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField mediaClientesText;
+    private javax.swing.JTextField mediaClientesTextField;
     private javax.swing.JTextField mediaProductosTextField;
     private javax.swing.JTextField mediaServicioTextField;
     // End of variables declaration//GEN-END:variables
