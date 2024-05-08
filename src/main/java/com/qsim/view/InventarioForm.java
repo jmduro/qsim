@@ -3,6 +3,7 @@ package com.qsim.view;
 import com.qsim.main.QSim;
 import com.qsim.model.NumericFieldParser;
 import com.qsim.model.Producto;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -100,15 +101,46 @@ public class InventarioForm extends javax.swing.JPanel {
 
     private void guardarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarButtonActionPerformed
         // TODO add your handling code here:
-        NumericFieldParser parser = new NumericFieldParser();
+        /*NumericFieldParser parser = new NumericFieldParser();
         parser.parseNumbersFromTextFields(idTextField, precioCompraTextField, precioVentaTextField);
         comprobarId(parser.getIntegerFrom(idTextField));
         comprobarNombre();
         comprobarPrecioCompra(parser.getDoubleFrom(precioCompraTextField));
         comprobarPrecioVenta(parser.getDoubleFrom(precioVentaTextField));
-        // Aquí se guarda la lista (memoria) a archivo binario (persistente).
+        // Aquí se guarda la lista (memoria) a archivo binario (persistente). */
+        NumericFieldParser parser = new NumericFieldParser();
+        parser.parseNumbersFromTextFields(precioCompraTextField, precioVentaTextField);
+        String nombre = nombreTextField.getText();
+        double precioCompra = parser.getDoubleFrom(precioCompraTextField);
+        double precioVenta = parser.getDoubleFrom(precioVentaTextField);
+
+        if (comprobarCampos(nombre, precioCompra, precioVenta)) {
+            int nuevoId = obtenerNuevoId();
+            Producto nuevoProducto = new Producto(nuevoId, nombre, precioCompra, precioVenta);
+            agregarProducto(nuevoProducto);
+            guardarInventario("inventario.bin");
+            cancelarButtonActionPerformed(evt); // Volver al panel principal después de guardar
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos correctamente.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_guardarButtonActionPerformed
 
+    private boolean comprobarCampos(String nombre, double precioCompra, double precioVenta) {
+        return !nombre.isEmpty() && precioCompra > 0 && precioVenta > 0;
+    }
+    
+    private int obtenerNuevoId() {
+        int maxId = 0;
+        if (inventario != null) {
+            for (Producto producto : inventario) {
+                if (producto.getId() > maxId) {
+                    maxId = producto.getId();
+                }
+            }
+        }
+        return maxId + 1;
+    }
+    
     private void comprobarId(int id) {
         // TODO
     }
