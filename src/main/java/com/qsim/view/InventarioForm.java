@@ -11,7 +11,7 @@ import com.qsim.model.Producto;
 public class InventarioForm extends javax.swing.JPanel {
 
     Producto producto;
-    
+
     /**
      * Creates new form DetalleGasto
      */
@@ -88,7 +88,7 @@ public class InventarioForm extends javax.swing.JPanel {
 
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
         producto = null;
-        
+
         FormPrincipal panel = new FormPrincipal();
 
         QSim.frame.setContentPane(panel);
@@ -107,23 +107,23 @@ public class InventarioForm extends javax.swing.JPanel {
         comprobarPrecioCompra(parser.getDoubleFrom(precioCompraTextField));
         comprobarPrecioVenta(parser.getDoubleFrom(precioVentaTextField));
     }//GEN-LAST:event_guardarButtonActionPerformed
-    
-    private void comprobarId(int id) throws IllegalArgumentException {
-        if (id < 0)
+
+    private void comprobarId(int id) {
+        // TODO
     }
-    
+
     private void comprobarNombre() {
-        
+        // TODO
     }
-    
-    private void comprobarPrecioCompra() {
-        
+
+    private void comprobarPrecioCompra(double precioCompra) {
+        // TODO
     }
-    
-    private void comprobarPrecioVenta() {
-        
+
+    private void comprobarPrecioVenta(double precioVenta) {
+        // TODO
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelarButton;
     private javax.swing.JButton guardarButton;
